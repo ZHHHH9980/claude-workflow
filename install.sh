@@ -21,6 +21,42 @@ if [ "$1" = "init" ]; then
             info "Created $file"
         fi
     done
+
+    # Copy tasks/ directory
+    if [ -d "tasks" ]; then
+        warn "tasks/ already exists, skipping"
+    else
+        mkdir -p tasks
+        cp "$SCRIPT_DIR/templates/tasks/prd-example.md" tasks/
+        info "Created tasks/ directory with example PRD"
+    fi
+
+    # Add workflow files to .gitignore
+    GITIGNORE_ENTRIES="PROGRESS.md
+REVIEW.md
+prd.json
+progress.txt
+.last-branch"
+    if [ -f ".gitignore" ]; then
+        while IFS= read -r entry; do
+            if ! grep -qF "$entry" .gitignore; then
+                echo "$entry" >> .gitignore
+                info "Added $entry to .gitignore"
+            fi
+        done <<< "$GITIGNORE_ENTRIES"
+    else
+        echo "$GITIGNORE_ENTRIES" > .gitignore
+        info "Created .gitignore with workflow files"
+    fi
+
+    # Symlink ralph.sh into project
+    if [ -f "ralph.sh" ]; then
+        warn "ralph.sh already exists, skipping"
+    else
+        ln -sf "$SCRIPT_DIR/ralph.sh" ./ralph.sh
+        info "Linked ralph.sh"
+    fi
+
     echo ""
     info "Project initialized. Edit CLAUDE.md to add project context."
     exit 0
