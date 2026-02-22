@@ -1,26 +1,26 @@
-# [项目名称]
+# [Project Name]
 
-## 项目概述
+## Overview
 
-简要描述项目做什么。
+Brief description of what this project does.
 
 - **Tech Stack**:
 - **PRD**:
 
 ---
 
-## 开发规范
+## Dev Conventions
 
-<!-- 项目特有的代码规范、约定 -->
-
----
-
-## 架构决策
-
-<!-- 重要的技术选型和理由 -->
+<!-- Project-specific code conventions -->
 
 ---
 
-## 已知问题
+## Architecture Decisions
 
-详见 `REVIEW.md`。
+<!-- Key technical choices and rationale -->
+
+---
+
+## Known Issues
+
+See `REVIEW.md` for details.

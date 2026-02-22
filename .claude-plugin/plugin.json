@@ -1,0 +1,13 @@
+{
+  "name": "claude-workflow",
+  "version": "1.0.0",
+  "description": "Personal development workflow: Ralph task management, PROGRESS.md tracking, REVIEW.md knowledge base",
+  "author": {
+    "name": "ZHHHH9980"
+  },
+  "homepage": "https://github.com/ZHHHH9980/claude-workflow",
+  "repository": "https://github.com/ZHHHH9980/claude-workflow",
+  "license": "MIT",
+  "skills": "./skills/",
+  "keywords": ["workflow", "progress", "review", "ralph"]
+}

@@ -1,3 +1,3 @@
-# 开发进度
+# Progress
 
-<!-- 按日期倒序记录，最新的在最上面 -->
+<!-- Reverse chronological order — newest first -->

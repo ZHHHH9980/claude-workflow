@@ -1,52 +1,52 @@
-# 通用开发工作流
+# Development Workflow
 
-## 任务管理
+## Task Management
 
-使用 Ralph 定义和驱动任务流程。开始工作前先检查是否有 Ralph 任务定义（`prd.json` 或相关配置）。
+Use Ralph to define and drive task workflows. Before starting work, check for Ralph task definitions (`prd.json` or related config).
 
-## 进度记录（PROGRESS.md）
+## Progress Tracking (PROGRESS.md)
 
-每次完成任务或有阶段性进展时，**必须**更新项目根目录的 `PROGRESS.md`。
+After completing tasks or reaching milestones, **always** update `PROGRESS.md` in the project root.
 
-规则：
-- 按日期倒序记录（最新的在最上面）
-- 记录完成了什么、改动了哪些关键文件
-- 如果是 Ralph 任务，标注对应的任务 ID
-- 保持简洁，不要写成日记
+Rules:
+- Reverse chronological order (newest first)
+- Record what was done and which key files changed
+- Reference Ralph task IDs when applicable
+- Keep it concise — not a diary
 
-格式：
+Format:
 
 ```
 ## YYYY-MM-DD
-- ✅ 完成了什么（涉及文件：`path/to/file`）
-- 🔄 进行中的事项，已完成 A，B 待续
-- ❌ 阻塞/放弃的事项及原因
+- ✅ Completed X (files: `path/to/file`)
+- 🔄 In progress: finished A, B pending
+- ❌ Blocked/dropped: reason
 ```
 
-## 问题沉淀（REVIEW.md）
+## Lessons Learned (REVIEW.md)
 
-开发中遇到的坑、重要决策、经验教训，沉淀到项目根目录的 `REVIEW.md`。
+Capture bugs, decisions, and hard-won lessons in `REVIEW.md` in the project root.
 
-适合记录的内容：
-- Bug 排查过程和根因
-- 架构决策及理由
-- 第三方库踩坑
-- 性能优化经验
-- 任何"下次别再踩"的东西
+What belongs here:
+- Bug investigations and root causes
+- Architecture decisions and rationale
+- Third-party library gotchas
+- Performance optimization findings
+- Anything worth not stepping on twice
 
-格式：
+Format:
 
 ```
-## [YYYY-MM-DD] 简短标题
+## [YYYY-MM-DD] Short title
 
-**问题**: 遇到了什么
-**原因**: 为什么会这样
-**解决**: 怎么修的
-**教训**: 以后怎么避免
+**Problem**: What happened
+**Cause**: Why it happened
+**Fix**: How it was resolved
+**Lesson**: How to avoid it next time
 ```
 
-## 工作节奏
+## Work Rhythm
 
-1. 开始前：看 `PROGRESS.md` 了解当前进度，看 Ralph 任务定义了解目标
-2. 工作中：遇到值得记录的问题，及时写入 `REVIEW.md`
-3. 完成后：更新 `PROGRESS.md`，标记任务状态
+1. Before starting: read `PROGRESS.md` for current status, check Ralph tasks for goals
+2. While working: capture notable issues in `REVIEW.md` as they happen
+3. After finishing: update `PROGRESS.md`, mark task status
