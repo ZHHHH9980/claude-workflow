@@ -51,7 +51,24 @@ Format:
 2. While working: capture notable issues in `REVIEW.md` as they happen
 3. After finishing: update `PROGRESS.md`, mark task status
 
-## Context Handoff (REQUIRED before any full restart)
+## Dangerous Commands — NEVER Run
+
+**NEVER use broad process-killing commands.** These will destroy the user's running browser sessions, other Claude Code instances, and any dependent processes.
+
+Banned:
+- `killall "Google Chrome"` — kills ALL Chrome including user's main browser
+- `killall Safari` / `killall Firefox` — same problem
+- `pkill -f <broad-pattern>` — can match unintended processes
+- Any `kill` command without a specific PID you verified first
+
+**Instead, always:**
+1. Use `lsof -i :<port>` or `ps aux | grep <exact-process>` to find the specific PID
+2. Verify the PID is the right process before killing
+3. Use `kill <specific-PID>` — never `killall` or broad `pkill`
+4. If you need to restart Chrome with debug flags, tell the user to quit and reopen manually — don't kill it programmatically
+
+**Why this matters:** The user runs multiple Chrome profiles, multiple Claude Code sessions, and MCP servers that depend on browser processes. One `killall` can cascade-crash everything.
+
 
 Whenever a full Claude Code restart is required (e.g. MCP config changes, environment changes), you MUST leave a handoff note BEFORE exiting. No exceptions.
 
