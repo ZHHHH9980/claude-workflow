@@ -145,3 +145,16 @@ Whenever a full Claude Code restart is required (e.g. MCP config changes, enviro
 - [anything that would be lost from memory]
 **Why restarting:** [reason]
 ```
+
+## Test Before Ship — Mandatory Self-Testing
+
+**每次新增或修改功能后，必须像真实用户一样自己测试所有 CRUD 操作，确认通过后才能交给用户。** 不要等用户手动测试发现问题。
+
+规则：
+1. 新功能写完后，写一个端到端测试脚本覆盖所有操作（Create, Read, Update, Delete）
+2. 自己运行测试，确认全部通过
+3. 如果测试失败，修复后重新测试，直到全部通过
+4. 测试通过后才能部署或告知用户"已完成"
+5. 测试脚本保留在 `tests/` 目录，方便后续回归
+
+**为什么这很重要：** 开发者自测是基本职业素养。把半成品交给用户测试，浪费用户时间，也暴露了对自己代码质量的不负责。TDD 不只是写测试——是确保交付物真正可用。
