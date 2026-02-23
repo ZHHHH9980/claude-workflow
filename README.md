@@ -68,6 +68,12 @@ Copies template files (`CLAUDE.md`, `PROGRESS.md`, `REVIEW.md`) into the current
 
 The plugin includes a `SessionStart` hook that automatically pulls the latest workflow config from GitHub when you start a new Claude session.
 
+### Default Before Coding
+
+Workflow loading is mandatory before implementation work:
+- SessionStart injects `<workflow-sync>` context automatically.
+- If a session misses it, run `~/Documents/claude-workflow/hooks/session-start.sh` manually before coding.
+
 ## Iterate
 
 This repo is meant to evolve. Update `global/CLAUDE.md`, push, and every project picks up the changes on next session start.

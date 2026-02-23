@@ -1,5 +1,16 @@
 # Development Workflow
 
+## Default Bootstrap (Mandatory)
+
+Before doing any implementation work (editing files, running migrations, deployment), you MUST load this workflow first.
+
+Required bootstrap order:
+1. Confirm workflow sync context exists in current session (`<workflow-sync>` block from SessionStart hook).
+2. If missing, run `~/Documents/claude-workflow/hooks/session-start.sh` manually and read the injected workflow context.
+3. Only after that, start coding or executing task commands.
+
+Do not skip this bootstrap step.
+
 ## Task Management
 
 Use Ralph to define and drive task workflows. Before starting work, check for Ralph task definitions (`prd.json` or related config).
