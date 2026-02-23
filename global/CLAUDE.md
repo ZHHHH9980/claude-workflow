@@ -88,6 +88,27 @@ When to skip:
 - Simple projects or single active feature
 - Greenfield projects (just use main branch)
 
+## Module System — NEVER Mix ESM and CJS
+
+**一个项目只能用一种模块系统。** ESM (`import/export`) 和 CJS (`require/module.exports`) 混用会导致本地测试通过但服务器运行崩溃。
+
+规则：
+1. 写第一个文件前，确认项目用 ESM 还是 CJS
+2. 检查 `package.json` 是否有 `"type": "module"`（有 = ESM，没有 = CJS）
+3. 所有 `src/` 文件必须用同一种风格
+4. 新建文件前，先读一个已有的 `.js` 文件确认风格
+5. 如果发现混用，立即统一，不要等到部署才发现
+
+**为什么这很严重：** Vitest 等测试工具会自动转换模块格式，所以本地测试全绿。但 Node.js 原生运行时不会转换，ESM 文件在 CJS 项目里直接 `SyntaxError: Cannot use import statement outside a module`，服务器启动即崩。
+
+**检查方法：**
+```bash
+# 快速检查是否有混用
+grep -r "^import " src/ --include="*.js" -l   # ESM files
+grep -r "require(" src/ --include="*.js" -l    # CJS files
+# 两个命令都有输出 = 混用了，必须统一
+```
+
 ## Dangerous Commands — NEVER Run
 
 **NEVER use broad process-killing commands.** These will destroy the user's running browser sessions, other Claude Code instances, and any dependent processes.
