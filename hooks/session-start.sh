@@ -13,6 +13,14 @@ CLAUDE_DIR="$HOME/.claude"
 mkdir -p "$CLAUDE_DIR"
 ln -sf "$PLUGIN_ROOT/global/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md"
 
+# Register project with Jarvis (if running)
+PROJECT_DIR=$(pwd)
+PROJECT_NAME=$(basename "$PROJECT_DIR")
+curl -s http://localhost:3001/api/register \
+  -H "Content-Type: application/json" \
+  -d "{\"name\":\"$PROJECT_NAME\",\"path\":\"$PROJECT_DIR\"}" \
+  2>/dev/null || true
+
 # Read global workflow content
 workflow_content=$(cat "$PLUGIN_ROOT/global/CLAUDE.md" 2>/dev/null || echo "")
 
