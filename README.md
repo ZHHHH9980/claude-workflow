@@ -1,32 +1,37 @@
 # claude-workflow
 
-My personal Claude Code development workflow. A reusable, iterable system for AI-assisted development across all projects.
+Personal Claude Code development workflow. Event-driven rules that inject the right context at the right time.
 
 ## Core Idea
 
-- Drive tasks with Ralph
-- Track progress in `PROGRESS.md`
-- Capture lessons in `REVIEW.md`
-- Layered config: global workflow + per-project context
+- `CLAUDE.md` only holds hard rules (4 条, ~9 lines) — maximum signal-to-noise ratio
+- Detailed guidance lives in `refs/`, injected by git hooks at the right moment (feat commit → PROGRESS.md format, fix commit → REVIEW.md format)
+- No preloading, no attention dilution
 
 ## Structure
 
 ```
 claude-workflow/
 ├── global/
-│   └── CLAUDE.md              # Global workflow → symlinked to ~/.claude/CLAUDE.md
+│   └── CLAUDE.md              # 4 hard rules → symlinked to ~/.claude/CLAUDE.md
+├── refs/                      # Event-driven reference snippets
+│   ├── on-feat-commit.md      # Injected by commit-msg hook on feat:
+│   ├── on-fix-commit.md       # Injected by commit-msg hook on fix:
+│   ├── on-project-init.md     # Referenced during project setup
+│   └── on-restart.md          # Handoff note template for session restarts
+├── hooks/
+│   ├── hooks.json             # SessionStart hook config
+│   └── session-start.sh       # Auto-pull + symlink + Jarvis registration
 ├── templates/
 │   ├── CLAUDE.md              # Project-level CLAUDE.md template
 │   ├── PROGRESS.md            # Progress tracking template
 │   └── REVIEW.md              # Lessons learned template
-├── hooks/
-│   ├── hooks.json             # SessionStart hook config
-│   └── session-start.sh       # Auto-sync on session start
 ├── skills/
 │   └── sync-workflow/SKILL.md # Manual sync skill
 ├── .claude-plugin/
 │   └── plugin.json            # Plugin manifest
-└── install.sh                 # Install script
+├── install.sh                 # Install & project init
+└── ralph.sh                   # Autonomous task runner
 ```
 
 ## Install
@@ -37,7 +42,7 @@ cd ~/Documents/claude-workflow
 ./install.sh
 ```
 
-This symlinks `global/CLAUDE.md` to `~/.claude/CLAUDE.md` and registers the plugin.
+Symlinks `global/CLAUDE.md` to `~/.claude/CLAUDE.md` and registers the plugin.
 
 ## Init a New Project
 
@@ -45,7 +50,7 @@ This symlinks `global/CLAUDE.md` to `~/.claude/CLAUDE.md` and registers the plug
 ~/Documents/claude-workflow/install.sh init
 ```
 
-Copies template files (`CLAUDE.md`, `PROGRESS.md`, `REVIEW.md`) into the current project directory.
+Copies templates (`CLAUDE.md`, `PROGRESS.md`, `REVIEW.md`) into the current project.
 
 ## How It Works
 
@@ -53,27 +58,28 @@ Copies template files (`CLAUDE.md`, `PROGRESS.md`, `REVIEW.md`) into the current
 
 | Layer | File | Purpose |
 |-------|------|---------|
-| Global | `~/.claude/CLAUDE.md` | Universal workflow rules, applies to all projects |
+| Global | `~/.claude/CLAUDE.md` | 4 hard rules, applies to all projects |
 | Project | `./CLAUDE.md` | Project-specific tech stack, conventions, architecture |
 
-### Three Files, Three Jobs
+### Event-Driven Rules
 
-| File | What to write | When to write |
-|------|--------------|---------------|
-| `CLAUDE.md` | Project context, dev conventions | On architecture changes |
-| `PROGRESS.md` | What was done, current status | After completing tasks |
-| `REVIEW.md` | Bugs, decisions, lessons learned | When hitting notable issues |
+Rules are not preloaded — they're injected by hooks when relevant:
 
-### Auto-Sync
+| Event | Hook | Injects |
+|-------|------|---------|
+| `feat:` commit | `commit-msg` | `refs/on-feat-commit.md` — PROGRESS.md format |
+| `fix:` commit | `commit-msg` | `refs/on-fix-commit.md` — REVIEW.md format + "add automated checks" |
+| Session start | `SessionStart` | Auto-pull latest workflow, refresh symlink |
+| Project init | `install.sh init` | Templates + `refs/on-project-init.md` guidance |
+| Session restart | Manual | `refs/on-restart.md` — handoff note template |
 
-The plugin includes a `SessionStart` hook that automatically pulls the latest workflow config from GitHub when you start a new Claude session.
+### Why Event-Driven
 
-### Default Before Coding
+Putting all rules in CLAUDE.md dilutes model attention. With 172 lines of mixed rules and templates, hard rules had ~5% signal-to-noise ratio. Now:
 
-Workflow loading is mandatory before implementation work:
-- SessionStart injects `<workflow-sync>` context automatically.
-- If a session misses it, run `~/Documents/claude-workflow/hooks/session-start.sh` manually before coding.
+- CLAUDE.md: 9 lines, 4 rules, ~100% signal
+- Everything else: injected at the exact moment it's needed
 
 ## Iterate
 
-This repo is meant to evolve. Update `global/CLAUDE.md`, push, and every project picks up the changes on next session start.
+Update `global/CLAUDE.md` or `refs/`, push, and every project picks up changes on next session start.
